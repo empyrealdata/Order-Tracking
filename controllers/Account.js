@@ -2,6 +2,7 @@
 
 var utils = require('../utils/writer.js');
 var Account = require('../service/AccountService');
+var User = require('../service/UserService');
 
 module.exports.changePassword = function changePassword (req, res, next) {
   var userId = req.swagger.params['userId'].value;
@@ -33,7 +34,40 @@ module.exports.loginUser = function loginUser (req, res, next) {
   var body = req.swagger.params['body'].value;
   Account.loginUser(body)
     .then(function (response) {
-      utils.writeJson(res, response);
+      var examples = {};
+      if (response.length != 0) {
+        User.getUserByName("",response[0].userid)
+        .then(function(getUserResponse){
+        var examples = {};
+          examples['application/json'] = {
+            "meta": {
+              "code": 200,
+              "message": "login success"
+            },
+            "user": getUserResponse[0]
+          }
+          utils.writeJson(res, examples[Object.keys(examples)[0]]);
+        })
+        .catch(function (response) {
+          utils.writeJson(res, response);
+        });
+      } else {
+        var examples = {};
+        examples['application/json'] = {
+          "meta": {
+            "code": 405,
+            "message": "invalid username and password"
+          },
+        }
+        if (Object.keys(examples).length > 0) {
+          resolve(examples[Object.keys(examples)[0]]);
+        } else {
+          resolve();
+        }
+        utils.writeJson(res, response);
+      }
+
+      
     })
     .catch(function (response) {
       utils.writeJson(res, response);

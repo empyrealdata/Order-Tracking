@@ -48,10 +48,12 @@ paths:
         description: "Created user object"
         required: true
         schema:
-          $ref: "#/definitions/User"
+          $ref: "#/definitions/AddUserRequest"
       responses:
-        default:
+        200:
           description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
       x-swagger-router-controller: "User"
   /user/{userId}:
     get:
@@ -70,7 +72,7 @@ paths:
         type: "string"
       - name: "userId"
         in: "path"
-        description: "The name that needs to be fetched. Use user1 for testing. "
+        description: "The id that needs to be fetched."
         required: true
         type: "string"
       responses:
@@ -107,10 +109,10 @@ paths:
         description: "Updated user object"
         required: true
         schema:
-          $ref: "#/definitions/User"
+          $ref: "#/definitions/AddUserRequest"
       responses:
         400:
-          description: "Invalid user supplied"
+          description: "Invalid user ID supplied"
         404:
           description: "User not found"
       x-swagger-router-controller: "User"
@@ -135,7 +137,7 @@ paths:
         type: "string"
       responses:
         400:
-          description: "Invalid username supplied"
+          description: "Invalid userId supplied"
         404:
           description: "User not found"
       x-swagger-router-controller: "User"
@@ -479,6 +481,26 @@ definitions:
           $ref: "#/definitions/securityQue"
     xml:
       name: "FogotPasswordRequest"
+  AddUserRequest:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      dob:
+        type: "string"
+        format: "date-time"
+      mobileNumbers:
+        type: "array"
+        items:
+          type: "string"
+      emails:
+        type: "array"
+        items:
+          type: "string"
+    xml:
+      name: "AddUserRequest"
   User:
     type: "object"
     properties:

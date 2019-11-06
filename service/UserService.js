@@ -1,16 +1,63 @@
 'use strict';
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/";
+
 
 
 /**
  * Create user
  * This can only be done by the logged in user.
  *
- * body User Created user object
- * no response value expected for this operation
+ * body AddUserRequest Created user object
+ * returns User
  **/
-exports.createUser = function(body) {
-  return new Promise(function(resolve, reject) {
-    resolve();
+exports.createUser = function (body) {
+  console.log("create user")
+  return new Promise(function (resolve, reject) {
+    MongoClient.connect(url, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db("inRangeDb");
+      dbo.collection("users").insertOne(body, function (err, res) {
+        if (err) throw err;
+        console.log("1 document inserted");
+        console.log("response : " + res.ops[0]);
+        db.close();
+        resolve(res.ops[0]);
+      });
+    });
+
+    //     var examples = {};
+    //     examples['application/json'] = {
+    //   "emails" : [ "jaga@gmail.com", "test@gmail.com" ],
+    //   "firstName" : "firstName",
+    //   "lastName" : "lastName",
+    //   "mobileNumbers" : [ "mobileNumbers", "mobileNumbers" ],
+    //   "dob" : "2000-01-23T04:56:07.000+00:00",
+    //   "permissions" : [ {
+    //     "name" : "name",
+    //     "permission" : "permission",
+    //     "id" : "id"
+    //   }, {
+    //     "name" : "name",
+    //     "permission" : "permission",
+    //     "id" : "id"
+    //   } ],
+    //   "rating" : 0.80082819046101150206595775671303272247314453125,
+    //   "userType" : "userType",
+    //   "userId" : "userId",
+    //   "businesses" : {
+    //     "imgUrl" : "imgUrl",
+    //     "catId" : "catId",
+    //     "rating" : 6.02745618307040320615897144307382404804229736328125,
+    //     "subCatId" : "subCatId",
+    //     "name" : "name"
+    //   }
+    // };
+    // if (Object.keys(examples).length > 0) {
+    //   resolve(examples[Object.keys(examples)[0]]);
+    // } else {
+    //   resolve();
+    // }
   });
 }
 
@@ -23,8 +70,8 @@ exports.createUser = function(body) {
  * userId String The name that needs to be deleted
  * no response value expected for this operation
  **/
-exports.deleteUser = function(auth_Token,userId) {
-  return new Promise(function(resolve, reject) {
+exports.deleteUser = function (auth_Token, userId) {
+  return new Promise(function (resolve, reject) {
     resolve();
   });
 }
@@ -35,43 +82,56 @@ exports.deleteUser = function(auth_Token,userId) {
  * 
  *
  * auth_Token String 
- * userId String The name that needs to be fetched. Use user1 for testing. 
+ * userId String The id that needs to be fetched.
  * returns User
  **/
-exports.getUserByName = function(auth_Token,userId) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "emails" : [ "emails", "emails" ],
-  "firstName" : "firstName",
-  "lastName" : "lastName",
-  "mobileNumbers" : [ "mobileNumbers", "mobileNumbers" ],
-  "dob" : "2000-01-23T04:56:07.000+00:00",
-  "permissions" : [ {
-    "name" : "name",
-    "permission" : "permission",
-    "id" : "id"
-  }, {
-    "name" : "name",
-    "permission" : "permission",
-    "id" : "id"
-  } ],
-  "rating" : 0.80082819046101150206595775671303272247314453125,
-  "userType" : "userType",
-  "userId" : "userId",
-  "businesses" : {
-    "imgUrl" : "imgUrl",
-    "catId" : "catId",
-    "rating" : 6.02745618307040320615897144307382404804229736328125,
-    "subCatId" : "subCatId",
-    "name" : "name"
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+exports.getUserByName = function (auth_Token, userId) {
+  return new Promise(function (resolve, reject) {
+    MongoClient.connect(url, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db("inRangeDb");
+      var request = {
+        _id: userId
+      };
+      dbo.collection("users").find(request).toArray(function (err, result) {
+        if (err) throw err;
+        console.log(result);
+        db.close();
+        resolve(result)
+      });
+    });
+    // var examples = {};
+    // examples['application/json'] = {
+    //   "emails": ["emails", "emails"],
+    //   "firstName": "firstName",
+    //   "lastName": "lastName",
+    //   "mobileNumbers": ["mobileNumbers", "mobileNumbers"],
+    //   "dob": "2000-01-23T04:56:07.000+00:00",
+    //   "permissions": [{
+    //     "name": "name",
+    //     "permission": "permission",
+    //     "id": "id"
+    //   }, {
+    //     "name": "name",
+    //     "permission": "permission",
+    //     "id": "id"
+    //   }],
+    //   "rating": 0.80082819046101150206595775671303272247314453125,
+    //   "userType": "userType",
+    //   "userId": "userId",
+    //   "businesses": {
+    //     "imgUrl": "imgUrl",
+    //     "catId": "catId",
+    //     "rating": 6.02745618307040320615897144307382404804229736328125,
+    //     "subCatId": "subCatId",
+    //     "name": "name"
+    //   }
+    // };
+    // if (Object.keys(examples).length > 0) {
+    //   resolve(examples[Object.keys(examples)[0]]);
+    // } else {
+    //   resolve();
+    // }
   });
 }
 
@@ -82,11 +142,11 @@ exports.getUserByName = function(auth_Token,userId) {
  *
  * auth_Token String 
  * userId String name that need to be updated
- * body User Updated user object
+ * body AddUserRequest Updated user object
  * no response value expected for this operation
  **/
-exports.updateUser = function(auth_Token,userId,body) {
-  return new Promise(function(resolve, reject) {
+exports.updateUser = function (auth_Token, userId, body) {
+  return new Promise(function (resolve, reject) {
     resolve();
   });
 }
