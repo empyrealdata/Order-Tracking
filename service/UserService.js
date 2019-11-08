@@ -85,7 +85,7 @@ exports.deleteUser = function (auth_Token, userId) {
  * userId String The id that needs to be fetched.
  * returns User
  **/
-exports.getUserByName = function (auth_Token, userId) {
+exports.getUserByName = function (userId) {
   return new Promise(function (resolve, reject) {
     MongoClient.connect(url, function (err, db) {
       if (err) throw err;

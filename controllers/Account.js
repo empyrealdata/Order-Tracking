@@ -35,18 +35,11 @@ module.exports.loginUser = function loginUser (req, res, next) {
   Account.loginUser(body)
     .then(function (response) {
       var examples = {};
-      if (response.length != 0) {
-        User.getUserByName("",response[0].userid)
+      if (Object.keys(response).length > 0) {
+        User.getUserByName(response[Object.keys(response)[0]].userid)
         .then(function(getUserResponse){
-        var examples = {};
-          examples['application/json'] = {
-            "meta": {
-              "code": 200,
-              "message": "login success"
-            },
-            "user": getUserResponse[0]
-          }
-          utils.writeJson(res, examples[Object.keys(examples)[0]]);
+        response[Object.keys(response)[0]].user = getUserResponse[0]
+          utils.writeJson(res, response[Object.keys(response)[0]]);
         })
         .catch(function (response) {
           utils.writeJson(res, response);
@@ -66,8 +59,6 @@ module.exports.loginUser = function loginUser (req, res, next) {
         }
         utils.writeJson(res, response);
       }
-
-      
     })
     .catch(function (response) {
       utils.writeJson(res, response);

@@ -56,15 +56,18 @@ module.exports.deleteUser = function deleteUser(req, res, next) {
 
 module.exports.getUserByName = function getUserByName(req, res, next) {
   console.log("getUserByName user");
-  var auth_Token = req.swagger.params['auth_Token'].value;
+  var auth_token = req.swagger.params['auth_Token'].value;
   var userId = req.swagger.params['userId'].value;
-  User.getUserByName(auth_Token, userId)
+  Account.checkAuth(auth_token)
+  .then(function(getUserResponse){
+  User.getUserByName(userId)
     .then(function (response) {
       utils.writeJson(res, response);
     })
     .catch(function (response) {
       utils.writeJson(res, response);
     });
+  })
 };
 
 module.exports.updateUser = function updateUser(req, res, next) {
