@@ -150,4 +150,3 @@ exports.updateUser = function (auth_Token, userId, body) {
     resolve();
   });
 }
-

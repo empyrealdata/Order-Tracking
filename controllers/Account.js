@@ -17,6 +17,43 @@ module.exports.changePassword = function changePassword (req, res, next) {
     });
 };
 
+
+module.exports.registerAccount = function registerAccount (req, res, next) {
+  var body = req.swagger.params['body'].value;
+  console.log("conttroller user");
+  Account.checkAccount(body.user.mobileNumbers[0])
+    .then(function (response) {
+      if (!response) {
+        User.createUser(body.user)
+          .then(function (createResponse) {
+            Account.registerAccount(body, createResponse._id)
+            var successResponse = {
+              "meta": {
+                "code": 200,
+                "messge": "successfully added"
+              },
+              registerResponse: createResponse
+            }
+            var examples = {};
+            examples['application/json'] = successResponse
+            utils.writeJson(res, examples[Object.keys(examples)[0]]);
+          })
+          .catch(function (response) {
+            utils.writeJson(res, response);
+          });
+      }
+      else {
+        var failResponse = {
+          "meta": {
+            "code": 405,
+            "messge": "user already exists"
+          }
+        }
+        utils.writeJson(res, failResponse);
+      }
+    })
+};
+
 module.exports.forgetpassword = function forgetpassword (req, res, next) {
   var mobileNumber = req.swagger.params['mobileNumber'].value;
   var auth_Token = req.swagger.params['auth_Token'].value;

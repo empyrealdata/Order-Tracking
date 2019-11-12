@@ -9,9 +9,19 @@
  * body Order Order object
  * no response value expected for this operation
  **/
-exports.addOrder = function(auth_Token,body) {
-  return new Promise(function(resolve, reject) {
-    resolve();
+exports.newOrder = function(body) {
+  return new Promise(function (resolve, reject) {
+    MongoClient.connect(url, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db("inRangeDb");
+      dbo.collection("orders").insertOne(body, function (err, res) {
+        if (err) throw err;
+        console.log("1 document inserted");
+        console.log("response : " + res.ops[0]);
+        db.close();
+        resolve(res.ops[0]);
+      });
+    });
   });
 }
 

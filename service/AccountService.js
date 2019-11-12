@@ -14,7 +14,7 @@ exports.checkAccount = function (mobileNumber) {
       if (err) throw err;
       var dbo = db.db("inRangeDb");
       var request = {
-        userid: mobileNumber
+        mno: mobileNumber
       };
       dbo.collection("accounts").find(request).toArray(function (err, result) {
         if (err) throw err;
@@ -44,6 +44,35 @@ exports.addAccount = function (mobileNumber, userId) {
         "userid": userId,
         "password": randomstring.generate(12),
         "isTempPwd": true
+      };
+      dbo.collection("accounts").insertOne(request, function (err, res) {
+        if (err) throw err;
+        console.log("response : " + res.ops[0]);
+        db.close();
+        resolve(res.ops[0]);
+      });
+    });
+  });
+}
+
+
+/**
+ * Add Account
+ *
+ * mobileNumber String Mobilenumber fetched respective user
+ * body ForgotPasswordRequest Forget User Password
+ **/
+exports.registerAccount = function (body, userId) {
+  return new Promise(function (resolve, reject) {
+    MongoClient.connect(url, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db("inRangeDb");
+      var request = {
+        "mno": body.user.mobileNumbers[0],
+        "userid": userId,
+        "password": body.password,
+        "isTempPwd": false,
+        "securityQues": body.securityQues
       };
       dbo.collection("accounts").insertOne(request, function (err, res) {
         if (err) throw err;
@@ -127,7 +156,7 @@ exports.checkAuth = function (auth_token) {
         if (err) throw err;
         console.log(result);
         if (result.length > 0) {
-          resolve(result.length)
+          resolve(result.length != 0)
         }
         db.close();
       });

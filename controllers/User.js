@@ -59,15 +59,17 @@ module.exports.getUserByName = function getUserByName(req, res, next) {
   var auth_token = req.swagger.params['auth_Token'].value;
   var userId = req.swagger.params['userId'].value;
   Account.checkAuth(auth_token)
-  .then(function(getUserResponse){
-  User.getUserByName(userId)
-    .then(function (response) {
-      utils.writeJson(res, response);
+    .then(function (authResponse) {
+      if (authResponse) {
+        User.getUserByName(userId)
+          .then(function (response) {
+            utils.writeJson(res, response);
+          })
+          .catch(function (response) {
+            utils.writeJson(res, response);
+          });
+      }
     })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-  })
 };
 
 module.exports.updateUser = function updateUser(req, res, next) {

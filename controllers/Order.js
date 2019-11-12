@@ -2,17 +2,23 @@
 
 var utils = require('../utils/writer.js');
 var Order = require('../service/OrderService');
+var Account = require('../service/AccountService');
 
-module.exports.addOrder = function addOrder (req, res, next) {
+module.exports.newOrder = function newOrder (req, res, next) {
   var auth_Token = req.swagger.params['auth_Token'].value;
   var body = req.swagger.params['body'].value;
-  Order.addOrder(auth_Token,body)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+  Account.checkAuth(auth_Token)
+  .then(function (authResponse) {
+    if (authResponse) {
+      Order.newOrder(body)
+      .then(function (response) {
+        utils.writeJson(res, response);
+      })
+      .catch(function (response) {
+        utils.writeJson(res, response);
+      });
+    }
+  })
 };
 
 module.exports.deleteOrder = function deleteOrder (req, res, next) {
