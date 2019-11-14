@@ -82,6 +82,7 @@ exports.newjob = function(auth_Token,body) {
 }
 
 
+
 /**
  * Updated Job
  * This can only be done by the logged in user.
@@ -96,4 +97,18 @@ exports.updateJob = function(auth_Token,jobId,body) {
     resolve();
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
