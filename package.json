@@ -1,0 +1,34 @@
+{
+  "name": "inrange",
+  "version": "1.0.0",
+  "description": "This is a InRange server..",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "swagger"
+  ],
+  "license": "Unlicense",
+  "private": true,
+  "dependencies": {
+    "connect": "^3.2.0",
+    "js-yaml": "^3.3.0",
+    "swagger-tools": "^0.10.4",
+    "mongodb": "3.3.3",
+    "randomstring": "1.1.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/empyrealdata/Order-Tracking.git"
+  },
+  "author": "Jagadeesan",
+  "bugs": {
+    "url": "https://github.com/empyrealdata/Order-Tracking/issues"
+  },
+  "homepage": "https://github.com/empyrealdata/Order-Tracking#readme"
+}

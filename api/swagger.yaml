@@ -1,0 +1,841 @@
+---
+swagger: "2.0"
+info:
+  description: "This is a InRange server.."
+  version: "1.0.0"
+  title: "Inrange"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "petstore.swagger.io"
+basePath: "/v2"
+tags:
+- name: "user"
+  description: "Operations about user"
+  externalDocs:
+    description: "Find out more about our store"
+    url: "http://swagger.io"
+- name: "account"
+  description: "Operations about account"
+  externalDocs:
+    description: "Find out more about our store"
+    url: "http://swagger.io"
+- name: "job"
+  description: "Operations about jobs"
+  externalDocs:
+    description: "Find out more about our store"
+    url: "http://swagger.io"
+schemes:
+- "https"
+- "http"
+paths:
+  /user:
+    post:
+      tags:
+      - "user"
+      summary: "Create user"
+      description: "This can only be done by the logged in user."
+      operationId: "createUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/AddUserRequest"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+      x-swagger-router-controller: "User"
+  /user/updateloc/{userId}:
+    post:
+      tags:
+      - "user"
+      summary: "User Location"
+      description: "This can only be done by the logged in user."
+      operationId: "updateLoc"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "The id that needs to be fetched."
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/AddUserRequest"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+      x-swagger-router-controller: "User"
+  /user/providerList/{userId}:
+    post:
+      tags:
+      - "user"
+      summary: "Provider List"
+      description: "This can only be done by the logged in user."
+      operationId: "providerList"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "The id that needs to be fetched."
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/AddUserRequest"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+      x-swagger-router-controller: "User"
+  /user/{userId}:
+    get:
+      tags:
+      - "user"
+      summary: "Get user by user name"
+      description: ""
+      operationId: "getUserByName"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "auth_Token"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "userId"
+        in: "path"
+        description: "The id that needs to be fetched."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "User"
+    put:
+      tags:
+      - "user"
+      summary: "Updated user"
+      description: "This can only be done by the logged in user."
+      operationId: "updateUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "auth_Token"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "userId"
+        in: "path"
+        description: "name that need to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated user object"
+        required: true
+        schema:
+          $ref: "#/definitions/AddUserRequest"
+      responses:
+        400:
+          description: "Invalid user ID supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "User"
+    delete:
+      tags:
+      - "user"
+      summary: "Delete user"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "auth_Token"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "userId"
+        in: "path"
+        description: "The name that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
+        400:
+          description: "Invalid userId supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "User"
+  /job:
+    post:
+      tags:
+      - "job"
+      summary: "Add Job"
+      description: "This can only be done by the logged in user."
+      operationId: "newjob"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Job object"
+        required: true
+        schema:
+          $ref: "#/definitions/Job"
+      responses:
+        default:
+          description: "successful operation"
+      x-swagger-router-controller: "Job"
+  /joblist:
+    post:
+      tags:
+      - "job"
+      summary: "List of jobs"
+      description: "This can only be done by the logged in user."
+      operationId: "listOfjobs"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "auth_Token"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "job filter"
+        required: true
+        schema:
+          $ref: "#/definitions/Job"
+      responses:
+        default:
+          description: "successful operation"
+      x-swagger-router-controller: "Job"
+  /chatHistory/{providerId}/{customerId}:
+    get:
+      tags:
+      - "job"
+      summary: "Get user by user name"
+      description: ""
+      operationId: "chatHistory"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "providerId"
+        in: "path"
+        description: "The name that needs to be fetched. Use user1 for testing. "
+        required: true
+        type: "string"
+      - name: "customerId"
+        in: "path"
+        description: "The name that needs to be fetched. Use user1 for testing. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Job"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Job"    
+  /myChats/{userid}:
+    get:
+      tags:
+      - "job"
+      summary: "Get user by user name"
+      description: ""
+      operationId: "myChats"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userid"
+        in: "path"
+        description: "The name that needs to be fetched. Use user1 for testing. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Job"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Job"   
+  /job/{jobId}:
+    get:
+      tags:
+      - "job"
+      summary: "Get user by user name"
+      description: ""
+      operationId: "getjobById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "jobId"
+        in: "path"
+        description: "The name that needs to be fetched. Use user1 for testing. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Job"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Job"
+    put:
+      tags:
+      - "job"
+      summary: "Updated Job"
+      description: "This can only be done by the logged in user."
+      operationId: "updateJob"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "auth_Token"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "jobId"
+        in: "path"
+        description: "name that need to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated Job object"
+        required: true
+        schema:
+          $ref: "#/definitions/Job"
+      responses:
+        400:
+          description: "Invalid user supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Job"
+    delete:
+      tags:
+      - "job"
+      summary: "Delete Job"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteJob"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "auth_Token"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "jobId"
+        in: "path"
+        description: "The name that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
+        400:
+          description: "Invalid jobId supplied"
+        404:
+          description: "Job not found"
+      x-swagger-router-controller: "Job"
+  /account/login:
+    post:
+      tags:
+      - "account"
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "loginUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/LoginRequest"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Account"
+  /account/register:
+    post:
+      tags:
+      - "account"
+      summary: "Logs account into the system"
+      description: ""
+      operationId: "registerAccount"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created Account object"
+        required: true
+        schema:
+          $ref: "#/definitions/AddUserRequest"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Meta"
+        400:
+          description: "Invalid Mobile Number supplied"
+        404:
+          description: "Account not found"
+      x-swagger-router-controller: "Account"
+  /account/logout:
+    get:
+      tags:
+      - "account"
+      summary: "Logs out current logged in user session"
+      description: ""
+      operationId: "logoutUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "auth_Token"
+        in: "header"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Meta"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Account"
+  /account/{mobileNumber}:
+    get:
+      tags:
+      - "account"
+      summary: "Logs out current logged in user session"
+      description: ""
+      operationId: "checkAccount"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "mobileNumber"
+        in: "path"
+        description: "The name that needs to be fetched. Use account for testing. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Meta"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Account"
+  /account/changepassword/{userId}:
+    post:
+      tags:
+      - "account"
+      summary: "Change Password"
+      description: "This can only be done by the logged in user."
+      operationId: "changePassword"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "userId fetched respective user"
+        required: true
+        type: "string"
+      - name: "auth_Token"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Change User Password"
+        required: true
+        schema:
+          $ref: "#/definitions/ChangePasswordRequest"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Meta"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Account"
+  /account/forgetpassword/{mobileNumber}:
+    post:
+      tags:
+      - "account"
+      summary: "Forget Password"
+      description: "This can only be done by the logged in user."
+      operationId: "forgetpassword"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "mobileNumber"
+        in: "path"
+        description: "Mobilenumber fetched respective user"
+        required: true
+        type: "string"
+      - name: "auth_Token"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Forget User Password"
+        required: true
+        schema:
+          $ref: "#/definitions/ForgotPasswordRequest"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Meta"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Account"
+securityDefinitions:
+  petstore_auth:
+    type: "oauth2"
+    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:pets: "modify pets in your account"
+      read:pets: "read your pets"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  Job:
+    type: "object"
+    properties:
+      quantity:
+        type: "integer"
+        format: "int32"
+      shipDate:
+        type: "string"
+        format: "date-time"
+      status:
+        type: "string"
+        description: "Job Status"
+      problemDesc:
+        type: "string"
+        description: "Job Description"
+      mappedCategoryIds:
+        type: "array"
+        items:
+          format: string
+      problemImgs:
+        type: "array"
+        items:
+          format: string
+      coversations:
+        type: "array"
+        items:
+          format: string
+      consumerInfo:
+        type: object
+        properties:
+          consumerId:
+            type: "string"
+          consumerName:
+            type: "string"
+          avtarUrl:
+            type: "string"
+      providerInfo:
+        type: object
+        properties:
+          providerId:
+            type: "string"
+          providerName:
+            type: "string"
+          avtarUrl:
+            type: "string"
+      complete:
+        type: "boolean"
+        default: false
+    xml:
+      name: "Job"
+  LoginRequest:
+    type: "object"
+    properties:
+      mobileNumber:
+        type: "string"
+      password:
+        type: "string"
+      fiToken:
+        type: "string"
+      deviceId:
+        type: "string"
+    xml:
+      name: "LoginRequest"
+  ChangePasswordRequest:
+    type: "object"
+    properties:
+      oldPassword:
+        type: "string"
+      newPassword:
+        type: "string"
+    xml:
+      name: "ChangePasswordRequest"
+  ForgotPasswordRequest:
+    type: "object"
+    properties:
+      mobileNumber:
+        type: "string"
+      securityQues:
+        type: "array"
+        items:
+          $ref: "#/definitions/securityQue"
+    xml:
+      name: "FogotPasswordRequest"
+  AddUserRequest:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      dob:
+        type: "string"
+        format: "date-time"
+      mobileNumbers:
+        type: "array"
+        items:
+          type: "string"
+      emails:
+        type: "array"
+        items:
+          type: "string"
+    xml:
+      name: "AddUserRequest"
+  User:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      dob:
+        type: "string"
+        format: "date-time"
+      mobileNumbers:
+        type: "array"
+        items:
+          type: "string"
+      emails:
+        type: "array"
+        items:
+          type: "string"
+      userType:
+        type: "string"
+      userId:
+        type: "string"
+      rating:
+        type: "number"
+      businesses:
+        $ref: "#/definitions/User_businesses"
+      permissions:
+        type: "array"
+        items:
+          $ref: "#/definitions/User_permissions"
+    xml:
+      name: "User"
+    example:
+      emails:
+      - "emails"
+      - "emails"
+      firstName: "firstName"
+      lastName: "lastName"
+      mobileNumbers:
+      - "mobileNumbers"
+      - "mobileNumbers"
+      dob: "2000-01-23T04:56:07.000+00:00"
+      permissions:
+      - name: "name"
+        permission: "permission"
+        id: "id"
+      - name: "name"
+        permission: "permission"
+        id: "id"
+      rating: 0.80082819046101150206595775671303272247314453125
+      userType: "userType"
+      userId: "userId"
+      businesses:
+        imgUrl: "imgUrl"
+        catId: "catId"
+        rating: 6.02745618307040320615897144307382404804229736328125
+        subCatId: "subCatId"
+        name: "name"
+  Meta:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+      message:
+        type: "string"
+    xml:
+      name: "Meta"
+    example:
+      code: 0
+      message: "message"
+  securityQue:
+    type: "object"
+    properties:
+      secQuesId:
+        type: "string"
+      secQue:
+        type: "string"
+      Answer:
+        type: "string"
+    xml:
+      name: "securityQue"
+  LoginResponse:
+    type: "object"
+    properties:
+      authToken:
+        type: "string"
+      schema:
+        $ref: "#/definitions/Meta"
+      loggedMno:
+        type: "string"
+      loggeduserId:
+        type: "string"
+      user_schema:
+        $ref: "#/definitions/User"
+    xml:
+      name: "LoginResponse"
+    example:
+      schema:
+        code: 0
+        message: "message"
+      authToken: "authToken"
+      loggedMno: "loggedMno"
+      loggeduserId: "loggeduserId"
+      user_schema:
+        emails:
+        - "emails"
+        - "emails"
+        firstName: "firstName"
+        lastName: "lastName"
+        mobileNumbers:
+        - "mobileNumbers"
+        - "mobileNumbers"
+        dob: "2000-01-23T04:56:07.000+00:00"
+        permissions:
+        - name: "name"
+          permission: "permission"
+          id: "id"
+        - name: "name"
+          permission: "permission"
+          id: "id"
+        rating: 0.80082819046101150206595775671303272247314453125
+        userType: "userType"
+        userId: "userId"
+        businesses:
+          imgUrl: "imgUrl"
+          catId: "catId"
+          rating: 6.02745618307040320615897144307382404804229736328125
+          subCatId: "subCatId"
+          name: "name"
+  User_businesses:
+    type: "object"
+    properties:
+      imgUrl:
+        type: "string"
+      rating:
+        type: "number"
+      catId:
+        type: "string"
+      subCatId:
+        type: "string"
+      name:
+        type: "string"
+    example:
+      imgUrl: "imgUrl"
+      catId: "catId"
+      rating: 6.02745618307040320615897144307382404804229736328125
+      subCatId: "subCatId"
+      name: "name"
+  User_permissions:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      permission:
+        type: "string"
+    example:
+      name: "name"
+      permission: "permission"
+      id: "id"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
