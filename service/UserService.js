@@ -1,6 +1,7 @@
 'use strict';
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
+var ObjectId = require('mongodb').ObjectID;
 
 
 
@@ -97,6 +98,10 @@ exports.getUserByName = function (userId) {
         if (err) throw err;
         console.log(result);
         db.close();
+        var i;
+        for(i = 0; i < result.length; i++){
+          result[i].id = result[i]._id;
+      }
         resolve(result)
       });
     });
@@ -149,4 +154,68 @@ exports.updateUser = function (auth_Token, userId, body) {
   return new Promise(function (resolve, reject) {
     resolve();
   });
+}
+
+/**
+ * Updated user
+ * This can only be done by the logged in user.
+ *
+ * auth_Token String 
+ * userId String name that need to be updated
+ * body AddUserRequest Updated user object
+ * no response value expected for this operation
+ **/
+exports.updateLoc = function (userId, body) {
+  return new Promise(function (resolve, reject) {
+    MongoClient.connect(url, function (err, db) {
+    var dbo = db.db("inRangeDb");
+    dbo.collection("users").updateOne({
+      _id: ObjectId(userId)
+    }, 
+    {$set: {
+      location: body.location
+    }},{ upsert: false }, function (err, res) {
+      if (err) throw err;
+      console.log("response : " + res);
+      resolve(res)
+    });
+  });
+});
+}
+
+
+/**
+ * Updated user
+ * This can only be done by the logged in user.
+ *
+ * auth_Token String 
+ * userId String name that need to be updated
+ * body AddUserRequest Updated user object
+ * no response value expected for this operation
+ **/
+exports.providerList = function (userId, body) {
+  return new Promise(function (resolve, reject) {
+    MongoClient.connect(url, function (err, db) {
+    var dbo = db.db("inRangeDb");
+    dbo.collection("users").find({
+      type: "provider"
+    },{firstName: true, mobileNumbers: false, emails:false}).toArray(function (err, result) {
+      if (err) throw err;
+      console.log(result);
+      db.close();
+      var i;
+      for(i = 0; i < result.length; i++){
+        result[i].id = result[i]._id;
+    }
+      var response = {
+        "users": result,
+        "meta" : {
+          "code":200,
+          "message":"success"
+        }
+      }
+      resolve(response)
+    });
+  });
+});
 }

@@ -102,11 +102,11 @@ exports.changePassword = function (userId, auth_Token, body) {
       password: body.oldPassword
     }, 
     {$set: {
-      password: body.newPassword,
-      isTempPwd: false
-    }},{ upsert: true }, function (err, res) {
+      password: body.newPassword
+    }},{ upsert: false }, function (err, res) {
       if (err) throw err;
       console.log("response : " + res);
+      resolve(res)
     });
   });
 });

@@ -55,6 +55,62 @@ paths:
           schema:
             $ref: "#/definitions/User"
       x-swagger-router-controller: "User"
+  /user/updateloc/{userId}:
+    post:
+      tags:
+      - "user"
+      summary: "User Location"
+      description: "This can only be done by the logged in user."
+      operationId: "updateLoc"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "The id that needs to be fetched."
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/AddUserRequest"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+      x-swagger-router-controller: "User"
+  /user/providerList/{userId}:
+    post:
+      tags:
+      - "user"
+      summary: "Provider List"
+      description: "This can only be done by the logged in user."
+      operationId: "providerList"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "The id that needs to be fetched."
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/AddUserRequest"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+      x-swagger-router-controller: "User"
   /user/{userId}:
     get:
       tags:
@@ -152,10 +208,6 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
-      - name: "auth_Token"
-        in: "header"
-        required: true
-        type: "string"
       - in: "body"
         name: "body"
         description: "Job object"
@@ -191,6 +243,63 @@ paths:
         default:
           description: "successful operation"
       x-swagger-router-controller: "Job"
+  /chatHistory/{providerId}/{customerId}:
+    get:
+      tags:
+      - "job"
+      summary: "Get user by user name"
+      description: ""
+      operationId: "chatHistory"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "providerId"
+        in: "path"
+        description: "The name that needs to be fetched. Use user1 for testing. "
+        required: true
+        type: "string"
+      - name: "customerId"
+        in: "path"
+        description: "The name that needs to be fetched. Use user1 for testing. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Job"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Job"    
+  /myChats/{userid}:
+    get:
+      tags:
+      - "job"
+      summary: "Get user by user name"
+      description: ""
+      operationId: "myChats"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userid"
+        in: "path"
+        description: "The name that needs to be fetched. Use user1 for testing. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Job"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Job"   
   /job/{jobId}:
     get:
       tags:
@@ -202,10 +311,6 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
-      - name: "auth_Token"
-        in: "header"
-        required: true
-        type: "string"
       - name: "jobId"
         in: "path"
         description: "The name that needs to be fetched. Use user1 for testing. "
@@ -304,6 +409,33 @@ paths:
         404:
           description: "User not found"
       x-swagger-router-controller: "Account"
+  /account/register:
+    post:
+      tags:
+      - "account"
+      summary: "Logs account into the system"
+      description: ""
+      operationId: "registerAccount"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created Account object"
+        required: true
+        schema:
+          $ref: "#/definitions/AddUserRequest"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Meta"
+        400:
+          description: "Invalid Mobile Number supplied"
+        404:
+          description: "Account not found"
+      x-swagger-router-controller: "Account"
   /account/logout:
     get:
       tags:
@@ -317,6 +449,32 @@ paths:
       parameters:
       - name: "auth_Token"
         in: "header"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Meta"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Account"
+  /account/{mobileNumber}:
+    get:
+      tags:
+      - "account"
+      summary: "Logs out current logged in user session"
+      description: ""
+      operationId: "checkAccount"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "mobileNumber"
+        in: "path"
+        description: "The name that needs to be fetched. Use account for testing. "
         required: true
         type: "string"
       responses:
@@ -426,10 +584,6 @@ definitions:
       status:
         type: "string"
         description: "Job Status"
-        enum:
-        - "new"
-        - "inprogress"
-        - "completed"
       problemDesc:
         type: "string"
         description: "Job Description"
@@ -438,6 +592,10 @@ definitions:
         items:
           format: string
       problemImgs:
+        type: "array"
+        items:
+          format: string
+      coversations:
         type: "array"
         items:
           format: string

@@ -85,3 +85,28 @@ module.exports.updateUser = function updateUser(req, res, next) {
       utils.writeJson(res, response);
     });
 };
+
+
+module.exports.updateLoc = function updateLoc(req, res) {
+  var userId = req.swagger.params['userId'].value;
+  var body = req.swagger.params['body'].value;
+  User.updateLoc(userId, body)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};
+
+module.exports.providerList = function providerList(req, res, next) {
+  var userId = req.swagger.params['userId'].value;
+  var body = req.swagger.params['body'].value;
+  User.providerList(userId, body)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};

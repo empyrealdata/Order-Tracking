@@ -18,6 +18,34 @@ module.exports.changePassword = function changePassword (req, res, next) {
 };
 
 
+module.exports.checkAccount = function checkAccount (req, res, next) {
+  var mobileNumber = req.swagger.params['mobileNumber'].value;
+  Account.checkAccount(mobileNumber)
+    .then(function (response) {
+      
+      var successResponse = {
+        "meta": {
+          "code": 200,
+          "messge": "already available"
+        }
+      }
+      if(!response){
+        successResponse = {
+          "meta": {
+            "code": 200,
+            "messge": "not available"
+          }
+        }
+      }
+      successResponse.isAvail = response
+      utils.writeJson(res, successResponse);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};
+
+
 module.exports.registerAccount = function registerAccount (req, res, next) {
   var body = req.swagger.params['body'].value;
   console.log("conttroller user");
