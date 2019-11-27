@@ -199,7 +199,7 @@ exports.providerList = function (userId, body) {
     var dbo = db.db("inRangeDb");
     dbo.collection("users").find({
       type: "provider"
-    }).toArray(function (err, result) {
+    },{firstName: true, mobileNumbers: false, emails:false}).toArray(function (err, result) {
       if (err) throw err;
       console.log(result);
       db.close();
